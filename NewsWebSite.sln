@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsWebSite", "NewsWebSite\NewsWebSite.csproj", "{9CAEB344-D07E-42E7-B20F-E132AD6A894A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{12FC0582-E55D-46FD-8B98-CB85FECEE7EE}"
+	ProjectSection(SolutionItems) = preProject
+		policyAuthenticationBlazor.md = policyAuthenticationBlazor.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{2CA80F41-FB3D-4FE1-B26D-525D24892A84}"
+	ProjectSection(SolutionItems) = preProject
+		Assets\1-1.png = Assets\1-1.png
+		Assets\1-2.png = Assets\1-2.png
+		Assets\1-3.png = Assets\1-3.png
+		Assets\1-4.png = Assets\1-4.png
+		Assets\1-5.png = Assets\1-5.png
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CAEB344-D07E-42E7-B20F-E132AD6A894A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAEB344-D07E-42E7-B20F-E132AD6A894A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAEB344-D07E-42E7-B20F-E132AD6A894A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAEB344-D07E-42E7-B20F-E132AD6A894A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2CA80F41-FB3D-4FE1-B26D-525D24892A84} = {12FC0582-E55D-46FD-8B98-CB85FECEE7EE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4869D96-9FC9-4DA6-AABE-BD59C8FD8323}
+	EndGlobalSection
+EndGlobal

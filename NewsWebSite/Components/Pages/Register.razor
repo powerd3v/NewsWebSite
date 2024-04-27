@@ -1,0 +1,96 @@
+﻿@page "/Account/Register";
+@inject UserManager<IdentityUser> userManager
+@inject NavigationManager navManager
+
+<PageTitle>Registeration</PageTitle>
+
+<h1>Please Register</h1>
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="RegisterDto" method="post" OnValidSubmit="RegisterUser" FormName="registerForm" Enhance>
+            <DataAnnotationsValidator />
+            <h2>Create A New Account</h2>
+            <hr />
+            <ValidationSummary class="text-danger" role="alert" />
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="RegisterDto.Email" class="form-control" type="email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label for="email" class="form-label">Email</label>
+                <ValidationMessage For="()=> RegisterDto.Email" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="RegisterDto.Password" class="form-control" type="password" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <label for="password" class="form-label">Password</label>
+                <ValidationMessage For="()=> RegisterDto.Password" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="RegisterDto.ConfirmPassword" type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                <label for="confirm-password" class="form-label">ConfirmPassword</label>
+                <ValidationMessage For="()=> RegisterDto.ConfirmPassword" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="RegisterDto.Role" class="form-control" type="Role" autocomplete="username" aria-required="true" placeholder="user" />
+                <ValidationMessage For="()=> RegisterDto.Role" class="text-danger" />
+            </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Create Account</button>
+            </div>
+            <div>
+                <p class="alert-danger">
+                    @Error
+                </p>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private RegisterModel RegisterDto { get; set; } = new();
+    private string Error = "";
+    public async Task RegisterUser()
+    {
+        var newUser = new IdentityUser()
+        {
+            UserName = RegisterDto.Email,
+            Email = RegisterDto.Email,
+            PasswordHash = RegisterDto.Password
+        };
+
+        var findUser = await userManager.FindByEmailAsync(RegisterDto.Email);
+        if (findUser is not null) return;
+        var result = await userManager.CreateAsync(newUser, RegisterDto.Password);
+        if (result.Succeeded)
+        {
+            //remove new(ClaimTypes.Role, "admin") if you just want simple user
+            List<Claim> claims = new()
+            {
+                new(ClaimTypes.Name, RegisterDto.Email),
+                new(ClaimTypes.Email, RegisterDto.Email)
+            };
+            switch (RegisterDto.Role.ToLower())
+            {
+                case "admin":
+                    claims.Add(new(ClaimTypes.Role, "admin"));
+                    break;
+                case "writer":
+                    claims.Add(new(ClaimTypes.Role, "writer"));
+                    break;
+                default:
+                    break;
+            }
+            await userManager.AddClaimsAsync(newUser!, claims);
+            navManager.NavigateTo("/account/login", true);
+        }
+        else
+        {
+            Error = "ERRORS : \n";
+            foreach (var e in result.Errors)
+            {
+                Error += $"{e.Code} : {e.Description}\n";
+            }
+
+        }
+    }
+
+}

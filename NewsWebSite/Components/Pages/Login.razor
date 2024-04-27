@@ -1,0 +1,54 @@
+﻿@page "/Account/Login"
+@inject UserManager<IdentityUser> userManager
+@inject SignInManager<IdentityUser> signInManager
+@inject NavigationManager navManager
+<PageTitle>Log in</PageTitle>
+
+<h1>Please Login</h1>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <EditForm Model="LoginDto" method="post" OnValidSubmit="LoginUser" FormName="loginForm" Enhance>
+                <DataAnnotationsValidator />
+                <hr />
+                <ValidationSummary class="text-danger" role="alert" />
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="LoginDto.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="email" class="form-label">Email</label>
+                    <ValidationMessage For="()=> LoginDto.Email" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="LoginDto.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" type="password" />
+                    <label for="password" class="form-label">Password</label>
+                    <ValidationMessage For="()=> LoginDto.Password" class="text-danger" />
+                </div>
+                <div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
+                </div>
+            </EditForm>
+        </section>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private LoginModel LoginDto { get; set; } = new();
+    public async Task LoginUser()
+    {
+
+        var findUser = await userManager.FindByEmailAsync(LoginDto.Email);
+        if (findUser is null) return;
+        var result = await signInManager.CheckPasswordSignInAsync(findUser, LoginDto.Password, false);
+        if (!result.Succeeded) return;
+        var response = await signInManager.PasswordSignInAsync(findUser, LoginDto.Password, false, false);
+        if (response.Succeeded)
+        {
+            navManager.NavigateTo("/", true);
+        }
+        else
+        {
+            //show error
+        }
+    }
+}
